@@ -71,11 +71,13 @@ at the gdm login screen, confirm the gear icon shows **hyprland** before enterin
 ## what the script does
 
 1. **installs core packages** — `hyprland`, `hyprland-guiutils`, and 30+ supporting packages from kali repositories
-2. **backs up configs** — saves your existing dotfiles to `~/configs-backup-YYYYMMDD-HHMMSS/`
-3. **copies hyde configs** — deploys the bundled dotfiles, scripts, themes, and systemd user services from `configs/` to your home directory
-4. **sets up wallpaper** — copies a default wallpaper from system backgrounds and configures `hyprpaper` as the backend
-5. **configures gdm** — sets hyprland as the default session via accountsservice
-6. **prepares directories** — creates required theme and cache directories
+2. **installs uv** — python package manager required by hyde's wallpaper and theme engines
+3. **installs nerd fonts** — `JetBrainsMono` and `CascadiaCode` nerd fonts for waybar, rofi, and terminal icons
+4. **backs up configs** — saves your existing dotfiles to `~/configs-backup-YYYYMMDD-HHMMSS/`
+5. **copies hyde configs** — deploys the bundled dotfiles, scripts, themes, and systemd user services from `configs/` to your home directory
+6. **sets up wallpaper** — copies a default wallpaper from system backgrounds and configures `hyprpaper` as the backend
+7. **configures gdm** — sets hyprland as the default session via accountsservice
+8. **prepares directories** — creates required theme and cache directories
 
 ### packages installed
 

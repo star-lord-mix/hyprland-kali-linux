@@ -139,6 +139,48 @@ sudo apt install -y \
 print_ok "all installable dependencies processed"
 
 # -----------------------------------------------------
+# step 2b: install uv (python package manager required by hyde)
+# -----------------------------------------------------
+print_step "installing uv package manager..."
+if ! command -v uv &>/dev/null; then
+    curl -LsSf https://astral.sh/uv/install.sh | sh 2>/dev/null || print_warn "uv install failed; some hyde features may not work"
+    # add uv to PATH for this session
+    [ -f "$HOME/.local/bin/env" ] && source "$HOME/.local/bin/env" 2>/dev/null || true
+    print_ok "uv installed"
+else
+    print_ok "uv already installed"
+fi
+
+# -----------------------------------------------------
+# step 2c: install nerd fonts (required for waybar/rofi icons)
+# -----------------------------------------------------
+print_step "installing nerd fonts..."
+
+NERD_FONTS_VERSION="v3.4.0"
+FONTS_DIR="$HOME/.local/share/fonts"
+
+install_nerd_font() {
+    local font_name="$1"
+    local zip_name="$2"
+    if fc-list | grep -qi "$font_name"; then
+        print_ok "$font_name already installed"
+        return
+    fi
+    mkdir -p "$FONTS_DIR/$font_name"
+    curl -LsSf "https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONTS_VERSION}/${zip_name}.zip" \
+        -o "/tmp/${zip_name}.zip" 2>/dev/null && \
+    unzip -qo "/tmp/${zip_name}.zip" -d "$FONTS_DIR/$font_name/" 2>/dev/null && \
+    rm -f "/tmp/${zip_name}.zip" && \
+    print_ok "installed $font_name" || print_warn "failed to install $font_name"
+}
+
+install_nerd_font "JetBrainsMono" "JetBrainsMono"
+install_nerd_font "CascadiaCode" "CascadiaCode"
+
+fc-cache -f "$FONTS_DIR" 2>/dev/null || true
+print_ok "nerd fonts processed"
+
+# -----------------------------------------------------
 # step 3: backup existing configs
 # -----------------------------------------------------
 print_step "backing up existing configs to ${BACKUP_DIR}..."
