@@ -1,6 +1,6 @@
 # Use your plugin system here
 
-return 1 # <--- Comment this line to disable HyDE's oh-my-zsh plugins and use the zinit examples below
+return 0 # Use Kali's native plugin system (zsh-autosuggestions, zsh-syntax-highlighting, etc.)
 
 #! This file will not load, remove the return 1 line above to enable this file.
 #? Below is an example of how to set up Zsh plugins using Zinit

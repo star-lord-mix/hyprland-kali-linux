@@ -6,6 +6,8 @@ killall -e xdg-desktop-portal
 sleep 1
 if [ -d /run/current-system/sw/libexec ]; then
     libDir=/run/current-system/sw/libexec
+elif [ -d /usr/libexec ]; then
+    libDir=/usr/libexec
 else
     libDir=/usr/lib
 fi

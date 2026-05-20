@@ -43,4 +43,7 @@ export EDITOR=code
 # unset -f command_not_found_handler # Uncomment to prevent searching for commands not found in package manager
 
 # Source user's original zshrc (e.g., Kali Linux default config)
-[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc"
+# NOTE: HyDE enables EXTENDED_GLOB which breaks bindkey ^P in Kali's .zshrc
+if [ -f "$HOME/.zshrc" ]; then
+    emulate zsh -c "source $HOME/.zshrc"
+fi
