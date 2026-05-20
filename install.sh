@@ -106,6 +106,14 @@ sudo apt install -y \
     cliphist \
     || print_warn "some hyprland ecosystem packages failed to install"
 
+# --- system services and applets ---
+sudo apt install -y \
+    udiskie \
+    blueman \
+    network-manager-gnome \
+    xdg-desktop-portal-hyprland \
+    || print_warn "some system service packages failed to install"
+
 # --- theming (gtk / qt) ---
 sudo apt install -y \
     nwg-look \
@@ -198,11 +206,32 @@ print_ok "configs copied"
 # -----------------------------------------------------
 print_step "creating required directories..."
 
-mkdir -p "$HOME/.config/hyde/themes"
+mkdir -p "$HOME/.config/hyde/themes/wallpapers"
 print_ok "theme directory ready"
 
 # -----------------------------------------------------
-# step 6: configure gdm default session
+# step 6: set up default wallpaper
+# -----------------------------------------------------
+print_step "setting up default wallpaper..."
+
+# copy first available system wallpaper
+WALLPAPER_SRC=""
+for dir in /usr/share/backgrounds/kali-16x9 /usr/share/backgrounds/kali /usr/share/backgrounds; do
+    if [ -d "$dir" ]; then
+        WALLPAPER_SRC=$(find "$dir" -type f \( -name "*.jpg" -o -name "*.png" \) 2>/dev/null | head -1)
+        [ -n "$WALLPAPER_SRC" ] && break
+    fi
+done
+
+if [ -n "$WALLPAPER_SRC" ]; then
+    cp "$WALLPAPER_SRC" "$HOME/.config/hyde/themes/wallpapers/wallpaper.jpg"
+    print_ok "default wallpaper copied from system backgrounds"
+else
+    print_warn "no system wallpaper found; set one manually with: hyde-shell wallpaper"
+fi
+
+# -----------------------------------------------------
+# step 7: configure gdm default session
 # -----------------------------------------------------
 print_step "configuring gdm to use hyprland as default session..."
 
@@ -218,7 +247,7 @@ ACCOUNTS_EOF
 print_ok "gdm default session set to hyprland"
 
 # -----------------------------------------------------
-# step 7: summary
+# step 8: summary
 # -----------------------------------------------------
 cat << SUMMARY
 
