@@ -199,10 +199,29 @@ cp -r "${CONFIGS_DIR}/.local/."  "$HOME/.local/"
 find "$HOME/.local/lib/hyde" -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \; 2>/dev/null || true
 find "$HOME/.local/bin"      -type f                                   -exec chmod +x {} \; 2>/dev/null || true
 
-print_ok "configs copied"
+# fix hardcoded paths from original hyde author (/home/khing/)
+print_step "fixing hardcoded paths..."
+find "$HOME/.config" "$HOME/.local" -type f \( \
+    -name "*.jsonc" -o -name "*.json" -o -name "*.css" \
+    -o -name "*.conf" -o -name "*.sh" -o -name "*.ini" \
+    -o -name "*.toml" -o -name "*.cfg" -o -name "*.kvconfig" \
+    \) -exec sed -i "s|/home/khing/|${HOME}/|g" {} \; 2>/dev/null || true
+
+print_ok "configs copied and paths fixed"
 
 # -----------------------------------------------------
-# step 5: create missing directories
+# step 5: copy wallbash cache placeholder
+# -----------------------------------------------------
+print_step "setting up wallbash cache..."
+
+if [ -d "${CONFIGS_DIR}/.cache" ]; then
+    mkdir -p "$HOME/.cache"
+    cp -r "${CONFIGS_DIR}/.cache/." "$HOME/.cache/" 2>/dev/null || true
+    print_ok "wallbash cache created"
+fi
+
+# -----------------------------------------------------
+# step 6: create missing directories
 # -----------------------------------------------------
 print_step "creating required directories..."
 
@@ -210,7 +229,7 @@ mkdir -p "$HOME/.config/hyde/themes/wallpapers"
 print_ok "theme directory ready"
 
 # -----------------------------------------------------
-# step 6: set up default wallpaper
+# step 7: set up default wallpaper
 # -----------------------------------------------------
 print_step "setting up default wallpaper..."
 
@@ -231,7 +250,7 @@ else
 fi
 
 # -----------------------------------------------------
-# step 7: configure gdm default session
+# step 8: configure gdm default session
 # -----------------------------------------------------
 print_step "configuring gdm to use hyprland as default session..."
 
@@ -247,7 +266,7 @@ ACCOUNTS_EOF
 print_ok "gdm default session set to hyprland"
 
 # -----------------------------------------------------
-# step 8: summary
+# step 9: summary
 # -----------------------------------------------------
 cat << SUMMARY
 
