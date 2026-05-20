@@ -62,7 +62,6 @@ $aws\
 $gcloud\
 $openstack\
 $azure\
-$cpp\
 $kotlin\
 $ocaml\
 $pixi\
@@ -173,11 +172,6 @@ symbol = "■ "
 style = "bold bright-cyan"
 format = " [$symbol(-$name)]($style)"
 symbol = "ℂ "
-
-[cpp]
-style = "bold bright-cyan"
-format = " [cpp](italic) [$symbol]($style)"
-symbol = " "
 
 [kotlin]
 format = " [kotlin](italic) [$symbol]($style)"
